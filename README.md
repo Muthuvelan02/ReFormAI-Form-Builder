@@ -18,10 +18,7 @@
 
 ## **📸 Screenshots**  
 ![landing-page](image.png)
-![Screenshot 2025-03-09 144243](https://github.com/user-attachments/assets/1d14dd54-4361-4782-9f56-2794e935722e)
-![Screenshot 2025-03-09 144350](https://github.com/user-attachments/assets/7d1565ef-0ebc-436b-9bc9-9067d85cc392)
 ![Screenshot 2025-03-09 144438](https://github.com/user-attachments/assets/8f077553-4b4f-4a5d-870c-a9a6841ee445)
-![Screenshot 2025-03-10 164200](https://github.com/user-attachments/assets/19497280-7394-4c3b-be15-95eaad17e54c)
 ![Screenshot 2025-03-10 164901](https://github.com/user-attachments/assets/2851cebc-6b75-45c1-897a-1ea1868c8e02)
 ![Screenshot 2025-03-10 165021](https://github.com/user-attachments/assets/a7d6dff7-2178-4a07-bb0c-c17b89cbad9a)
 ![Screenshot 2025-03-10 165058](https://github.com/user-attachments/assets/bbc96f4f-b9fe-43bc-a875-f35c265ddf6a)
@@ -123,15 +120,6 @@ Visit `http://localhost:3000` in your browser to see the project in action.
 
 ---
 
-## **📌 Deployment**  
-The project is deployed on **Vercel**. To deploy your own instance:  
-1. **Push your project** to GitHub  
-2. **Connect the repository** to Vercel  
-3. **Configure environment variables** (Clerk, Neon, Gemini API)  
-4. **Deploy and launch** 🚀  
-
----
-
 ## **👨‍💻 Contributing**  
 Contributions are welcome! Follow these steps:  
 1. **Fork** the repository  
@@ -145,7 +133,6 @@ Contributions are welcome! Follow these steps:
 ## **📧 Contact**  
 For any queries, feel free to reach out:  
 📩 **tmuthuvelan0201@gmail.com**  
-🔗 [GitHub Repo](https://github.com/Muthuvelan02/ReForm-AI-Form-Builder)  
 
 ---
 
