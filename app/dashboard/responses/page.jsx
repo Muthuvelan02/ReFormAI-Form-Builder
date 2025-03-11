@@ -1,19 +1,41 @@
-"use client"
+"use client";
+
 import { Button } from '@/components/ui/button';
 import { db } from '@/configs';
 import { JsonForms, userResponses } from '@/configs/schema';
-import { useUser } from '@clerk/nextjs'
+import { useUser } from '@clerk/nextjs';
 import { eq } from 'drizzle-orm';
 import { Loader2 } from 'lucide-react';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import * as XLSX from 'xlsx';  // Import XLSX  
 
-function Responses({jsonForm,formRecord}) {
+function Responses({ jsonForm = {}, formRecord = {} }) {
     const { user } = useUser();
     const [formList, setFormList] = useState([]);
     const [loading, setLoading] = useState(true);
     const [exportLoading, setExportLoading] = useState({});
     const [jsonData, setJsonData] = useState([]);
+
+    useEffect(() => {
+        if (user?.primaryEmailAddress?.emailAddress) {
+            getFormList();
+        }
+    }, [user]);
+
+    const getFormList = async () => {
+        setLoading(true);
+        try {
+            const result = await db.select().from(JsonForms)
+                .where(eq(JsonForms.createdBy, user.primaryEmailAddress.emailAddress));
+
+            console.log("Fetched Forms:", result);
+            setFormList(result || []);
+        } catch (error) {
+            console.error("Error fetching forms:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const ExportData = async (formId, formTitle) => {
         setExportLoading(prevState => ({ ...prevState, [formId]: true }));
@@ -31,35 +53,20 @@ function Responses({jsonForm,formRecord}) {
         } finally {
             setExportLoading(prevState => ({ ...prevState, [formId]: false }));
         }
-    }
-
-    useEffect(() => {
-        if (user) getFormList();
-    }, [user]);
-
-    const getFormList = async () => {
-        setLoading(true);
-        try {
-            const result = await db.select().from(JsonForms)
-                .where(eq(JsonForms.createdBy, user?.primaryEmailAddress?.emailAddress));
-
-            console.log("Fetched Forms:", result); // Debugging log
-            setFormList(result || []);
-        } catch (error) {
-            console.error("Error fetching forms:", error);
-        } finally {
-            setLoading(false);
-        }
     };
 
-    // Convert Json to Excel and download
     const exportToExcel = (organizedData, formTitle) => {
+        if (organizedData.length === 0) {
+            console.warn("No data to export.");
+            return;
+        }
+
         const worksheet = XLSX.utils.json_to_sheet(organizedData);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
 
-        XLSX.writeFile(workbook, `${formTitle}.xlsx`);
-    }
+        XLSX.writeFile(workbook, `${formTitle || "Exported_Data"}.xlsx`);
+    };
 
     return (
         <div className='p-10'>
@@ -70,12 +77,11 @@ function Responses({jsonForm,formRecord}) {
             ) : formList.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {formList.map((form, index) => {
-                        let parsedForm;
+                        let parsedForm = {};
                         try {
-                            parsedForm = JSON.parse(form.jsonform.replace(/```json\n|\n```/g, ''));
+                            parsedForm = JSON.parse(form.jsonform?.replace(/```json\n|\n```/g, '') || '{}');
                         } catch (error) {
                             console.error("Error parsing form JSON:", error);
-                            parsedForm = {};
                         }
 
                         return (
@@ -86,10 +92,11 @@ function Responses({jsonForm,formRecord}) {
 
                                 <div className='flex justify-between items-center'>
                                     <h2 className='text-sm'>Export Responses to <strong>Excel</strong></h2>
-                                    <Button className='' size='sm'
-                                    onClick={() => ExportData(form.id, parsedForm.formTitle)}
-                                    disabled={exportLoading[form.id]}
-                                    >{exportLoading[form.id] ? <Loader2 className='animate-spin' /> : 'Export'}
+                                    <Button size='sm'
+                                        onClick={() => ExportData(form.id, parsedForm.formTitle)}
+                                        disabled={exportLoading[form.id]}
+                                    >
+                                        {exportLoading[form.id] ? <Loader2 className='animate-spin' /> : 'Export'}
                                     </Button>
                                 </div>
                             </div>
