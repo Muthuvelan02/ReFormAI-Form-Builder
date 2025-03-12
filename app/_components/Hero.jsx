@@ -442,18 +442,11 @@ const Hero=()=> {
             viewport={{ once: true }}
           >
             <h2 className="text-4xl font-bold mb-6">Ready to Transform Your Forms?</h2>
-            <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Join thousands of businesses already using ReForm to create smarter, more efficient forms. Get started
               today and see the difference.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link href={"/dashboard"}>
-                <Button className="px-8 py-4 text-lg font-semibold bg-gradient-to-r from-yellow-400 to-red-500 text-white rounded-lg shadow-lg transform hover:scale-105 transition">
-                  Start Free Trial
-                </Button>
-              </Link>
-              
-            </div>
+            
           </motion.div>
         </div>
       </section>

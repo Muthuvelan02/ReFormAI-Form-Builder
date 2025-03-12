@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react'
 import {
   Select,
@@ -10,15 +11,28 @@ import Themes from "@/app/_data/Themes"
 import GradientBg from "@/app/_data/GradientBg"
 import { Button } from '@/components/ui/button'
 import { CheckCircle } from 'lucide-react'
-import { Checkbox } from '@/components/ui/checkbox'
 
 function Controller({ selectedTheme, selectedBackground }) {
-  const [showMore, setShowMore] = useState(6)
-  const [activeTheme, setActiveTheme] = useState("light") // Default theme set to "light"
-  const [activeBackground, setActiveBackground] = useState(null);
+  const [showMore, setShowMore] = useState(9)
+  const [activeTheme, setActiveTheme] = useState("default") 
+  const [activeBackground, setActiveBackground] = useState("default");
+
+  function generateRandomTheme() {
+    const randomIndex = Math.floor(Math.random() * Themes.length)
+    const randomTheme = Themes[randomIndex].theme
+    setActiveTheme(randomTheme) // Fixed function call
+    selectedTheme(randomTheme) // Update the selected theme
+  }
+
+  function generateRandomBackground() {
+    const randomIndex = Math.floor(Math.random() * GradientBg.length)
+    const randomBackground = GradientBg[randomIndex].gradient
+    setActiveBackground(randomBackground) // Update active background
+    selectedBackground(randomBackground) // Update the selected background
+  }
 
   return (
-    <div className='p-4 bg-white shadow-lg rounded-lg'>
+    <div className=' bg-white rounded-lg'>
       {/* Theme Selection Controller */}
       <h2 className='my-2 text-lg font-semibold text-gray-700'>Themes</h2>
       <Select onValueChange={(value) => { 
@@ -29,7 +43,7 @@ function Controller({ selectedTheme, selectedBackground }) {
           <SelectValue placeholder="Select a Theme" />
         </SelectTrigger>
         <SelectContent className="border-gray-200 shadow-md rounded-md">
-          {Themes.map((theme, index) => (
+          {Themes.map((theme) => (
             <SelectItem value={theme.theme} key={theme.theme}>
               <div className='flex items-center gap-3 p-2 rounded-md transition-all 
                 hover:bg-gray-100 hover:shadow-sm cursor-pointer'
@@ -49,7 +63,7 @@ function Controller({ selectedTheme, selectedBackground }) {
       </Select>
 
       {/* Background Selection Controller */}
-      <h2 className='mt-6 mb-2 text-lg font-semibold text-gray-700'>Background</h2>
+      <h2 className='mt-3 mb-2 text-lg font-semibold text-gray-700'>Background</h2>
       <div className='grid grid-cols-3 gap-4'>
         {GradientBg.map((bg, index) => (index < showMore) && (
           <div
@@ -66,13 +80,37 @@ function Controller({ selectedTheme, selectedBackground }) {
           </div>
         ))}
       </div>
+
+      {/* Show More / Less Button */}
       <Button variant="outline" size="sm"
         className='w-full mt-2'
-        onClick={() => setShowMore(showMore > 6 ? 6 : 20)}
-      >{showMore > 6 ? 'Show Less' : 'Show More'}</Button>
-  
-    </div>
+        onClick={() => setShowMore(showMore > 9 ? 9 : 50)}
+      >
+        {showMore > 9 ? 'Show Less' : 'Show More'}
+      </Button>
 
+      {/* Buttons for Generating Random Theme & Background */}
+      <div className="mt-4 space-y-2">
+      <Button 
+    className="w-full py-2 text-white font-semibold rounded-lg transition-all 
+               bg-gradient-to-r from-blue-500 to-indigo-600 shadow-md 
+               hover:from-indigo-600 hover:to-purple-500 hover:shadow-lg 
+               "
+    onClick={generateRandomTheme}
+  >
+    Generate Random Theme
+  </Button>
+  <Button 
+    className="w-full py-2 text-white font-semibold rounded-lg transition-all 
+               bg-gradient-to-r from-green-500 to-teal-600 shadow-md 
+               hover:from-teal-600 hover:to-cyan-500 hover:shadow-lg 
+               "
+    onClick={generateRandomBackground}
+  >
+     Generate Random Background
+  </Button>
+      </div>
+    </div>
   )
 }
 

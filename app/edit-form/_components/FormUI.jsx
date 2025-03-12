@@ -119,7 +119,7 @@ function FormUI({ jsonForm: initialJsonForm, selectedTheme, onFieldUpdate, delet
         <div key={index} className="flex items-center gap-2">
           {field.fieldType === "select" ? (
             <div className="my-3 w-full ">
-              <label className="text-xs text-gray-500">
+              <label className="text-sm text-gray-400">
                 {field.formLabel}
                 {field.required && <RequiredIndicator />}
               </label>
@@ -138,7 +138,7 @@ function FormUI({ jsonForm: initialJsonForm, selectedTheme, onFieldUpdate, delet
             </div>
           ) : field.fieldType === "radio" ? (
             <div className="w-full my-3">
-              <label className="text-xs text-gray-500">
+              <label className="text-sm text-gray-400">
                 {field.formLabel}
                 {field.required && <RequiredIndicator />}
               </label>
@@ -157,7 +157,7 @@ function FormUI({ jsonForm: initialJsonForm, selectedTheme, onFieldUpdate, delet
             </div>
           ) : field.fieldType === "checkbox" ? (
             <div className="my-3 w-full">
-              <label className="text-xs text-gray-500">
+              <label className="text-sm text-gray-400">
                 {field?.formLabel}
                 {field.required && <RequiredIndicator />}
               </label>
@@ -173,7 +173,7 @@ function FormUI({ jsonForm: initialJsonForm, selectedTheme, onFieldUpdate, delet
             </div>
           ) : (
             <div className="my-3 w-full ">
-              <label className="text-xs text-gray-500">
+              <label className="text-sm text-gray-400">
                 {field.formLabel}
                 {field.required && <RequiredIndicator />}
               </label>
