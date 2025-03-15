@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
     <ClerkProvider>
     <html lang="en">
       <body
-        className={inter.className}
+        className={`min-h-screen bg-background text-foreground ${inter.className}`}
       >
         <Header/>
         <Toaster />

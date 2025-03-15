@@ -1,63 +1,91 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
-import { LibraryBig, LineChart, MessageSquare, Shield, Loader2, Plus, PlusCircle, PlusCircleIcon, FilePlus } from 'lucide-react'
-import Link from 'next/link';
-import { usePathname } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
-import { Textarea } from "@/components/ui/textarea"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import dynamic from "next/dynamic";
+"use client";
 
+import { useState, useEffect } from "react";
+import { ArrowLeft, Menu } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 function SideNav() {
-  const [openDialog, setOpenDialog] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [userInput, setUserInput] = useState("");  // Fixed: Added state for user input
-
-  const menuList = [
-    { id: 1, name: 'My Forms', icon: LibraryBig, path: '/dashboard' },
-    { id: 2, name: 'Responses', icon: MessageSquare, path: '/dashboard/responses' },
-    
-  ];
-
+  const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const path = usePathname();
 
+  // Handle screen resizing
   useEffect(() => {
-    // console.log(path)
-  }, [path]);
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setIsOpen(true);
+        setIsMobile(false);
+      } else {
+        setIsOpen(false);
+        setIsMobile(true);
+      }
+    };
 
-  // Fixed: Added placeholder function for form creation
-  const onCreateForm = () => {
-    setLoading(true);
-    setTimeout(() => {
-      console.log("Form Created:", userInput);
-      setLoading(false);
-      setOpenDialog(false);
-    }, 2000);
-  };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
-    <div className='h-screen shadow-md borders'>
-      <div className='p-5'>
-        {menuList.map((menu, index) => (
-          <Link href={menu.path} key={index} className={`flex items-center gap-3 p-4 mb-3 hover:bg-primary hover:text-white rounded-lg cursor-pointer transition text-gray-500
-          ${path == menu.path && 'bg-primary text-white'}`}>
-            <menu.icon className="font-bold" />
-            {menu.name}
-          </Link>
-        ))}
+    <>
+      {/* Show menu icon only when sidebar is collapsed on mobile */}
+      {isMobile && !isOpen && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="fixed top-75 left-4 z-50 p-2 bg-white shadow-lg rounded-md md:hidden"
+          aria-label="Open Sidebar"
+        >
+          <Menu className="h-6 w-6 text-primary" />
+        </button>
+      )}
+
+      {/* Sidebar */}
+      <div
+        className={cn(
+          "fixed top-75 left-0 h-full w-[52%] max-w-[280px] bg-white shadow-lg transition-transform duration-300 ease-in-out z-40",
+          isOpen ? "translate-x-0" : "-translate-x-full",
+          "md:translate-x-0 md:w-[220px] md:border-r md:shadow-none"
+        )}
+      >
+        {/* Sidebar Header */}
+        <div className="flex items-center justify-between p-4 border-b md:hidden">
+          <button onClick={() => setIsOpen(false)} aria-label="Close Sidebar">
+            <ArrowLeft className="h-6 w-6 text-gray-700" />
+          </button>
+        </div>
+
+        {/* Sidebar Links */}
+        <nav className="p-5 ">
+          {[
+            { name: "Dashboard", path: "/dashboard" },
+            { name: "Responses", path: "/dashboard/responses" },
+          ].map((item) => (
+            <Link
+              key={item.path}
+              href={item.path}
+              className={cn(
+                "block p-3 text-gray-700 rounded-lg mt-3 hover:bg-gray-200 transition",
+                path === item.path && "bg-gray-300 font-semibold"
+              )}
+              onClick={() => setIsOpen(false)}
+            >
+              {item.name}
+            </Link>
+          ))}
+        </nav>
       </div>
 
-    </div>
-  )
+      {/* Background Overlay (Appears on mobile when sidebar is open) */}
+      {isMobile && isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+    </>
+  );
 }
 
-export default dynamic(() => Promise.resolve(SideNav), { ssr: false })
+export default SideNav;

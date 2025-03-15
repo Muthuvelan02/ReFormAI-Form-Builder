@@ -151,9 +151,9 @@ function EditForm({ params }) {
   return (
     <div className="p-3">
       <div className="flex justify-between items-center mb-5">
-        <button className="btn btn-primary flex gap-2 items-center cursor-pointer hover:font-bold" onClick={() => router.back()}>
+        <Button className=" btn-primary text-xs flex gap-2 items-center cursor-pointer hover:font-bold" onClick={() => router.back()}>
           <ArrowLeft /> Back
-        </button>
+        </Button>
 
         <div className="flex gap-2">
           <Link href={'/aiform/' + record?.id} target="_blank">

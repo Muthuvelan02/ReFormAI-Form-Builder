@@ -7,7 +7,7 @@ import { useUser } from '@clerk/nextjs';
 import { eq } from 'drizzle-orm';
 import { Loader2 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import * as XLSX from 'xlsx';  // Import XLSX  
+import * as XLSX from 'xlsx';
 
 function Responses({ jsonForm = {}, formRecord = {} }) {
     const { user } = useUser();
@@ -69,13 +69,13 @@ function Responses({ jsonForm = {}, formRecord = {} }) {
     };
 
     return (
-        <div className='p-10'>
-            <h2 className='font-bold text-3xl mb-5'>Responses</h2>
+        <div className='p-12 md:p-10'>
+            <h2 className='font-bold text-lg md:text-3xl mb-4 md:mb-5'>Responses</h2>
 
             {loading ? (
-                <p>Loading responses...</p>
+                <p className="text-sm">Loading responses...</p>
             ) : formList.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 md:gap-6">
                     {formList.map((form, index) => {
                         let parsedForm = {};
                         try {
@@ -85,26 +85,27 @@ function Responses({ jsonForm = {}, formRecord = {} }) {
                         }
 
                         return (
-                            <div key={index} className='border shadow-sm rounded-lg p-4'>
-                                <h2 className='text-lg text-black'>{parsedForm.formTitle || "Untitled Form"}</h2>
-                                <h2 className='text-sm text-gray-500'>{parsedForm.formSubheading || "No subheading available"}</h2>
-                                <hr className='my-4' />
+                            <div key={index} className='border shadow-sm rounded-lg p-3 md:p-4'>
+                                <h2 className='text-sm md:text-lg text-black'>{parsedForm.formTitle || "Untitled Form"}</h2>
+                                <h2 className='text-xs md:text-sm text-gray-500'>{parsedForm.formSubheading || "No subheading available"}</h2>
+                                <hr className='my-3 md:my-4' />
 
                                 <div className='flex justify-between items-center'>
-                                    <h2 className='text-sm'>Export Responses to <strong>Excel</strong></h2>
-                                    <Button size='sm'
-                                        onClick={() => ExportData(form.id, parsedForm.formTitle)}
-                                        disabled={exportLoading[form.id]}
-                                    >
-                                        {exportLoading[form.id] ? <Loader2 className='animate-spin' /> : 'Export'}
-                                    </Button>
+                                    <h2 className='text-xs md:text-sm'>Export Responses to <strong>Excel</strong></h2>
+                                    <Button className="text-xs px-2 py-1 md:text-sm md:px-3 md:py-2"
+    onClick={() => ExportData(form.id, parsedForm.formTitle)}
+    disabled={exportLoading[form.id]}
+>
+    {exportLoading[form.id] ? <Loader2 className='animate-spin' /> : 'Export'}
+</Button>
+
                                 </div>
                             </div>
                         );
                     })}
                 </div>
             ) : (
-                <p>No responses found.</p>
+                <p className="text-sm">No responses found.</p>
             )}
         </div>
     );

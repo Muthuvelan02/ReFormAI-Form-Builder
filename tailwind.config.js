@@ -1,100 +1,101 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-    darkMode: ["class"],
-    content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
-  theme: {
-  	extend: {
-  		colors: {
-  			background: 'hsl(var(--background))',
-  			foreground: 'hsl(var(--foreground))',
-  			card: {
-  				DEFAULT: 'hsl(var(--card))',
-  				foreground: 'hsl(var(--card-foreground))'
-  			},
-  			popover: {
-  				DEFAULT: 'hsl(var(--popover))',
-  				foreground: 'hsl(var(--popover-foreground))'
-  			},
-  			primary: {
-  				DEFAULT: '#006FE6',
-  				foreground: 'hsl(var(--primary-foreground))'
-  			},
-  			secondary: {
-  				DEFAULT: 'hsl(var(--secondary))',
-  				foreground: 'hsl(var(--secondary-foreground))'
-  			},
-  			muted: {
-  				DEFAULT: 'hsl(var(--muted))',
-  				foreground: 'hsl(var(--muted-foreground))'
-  			},
-  			accent: {
-  				DEFAULT: 'hsl(var(--accent))',
-  				foreground: 'hsl(var(--accent-foreground))'
-  			},
-  			destructive: {
-  				DEFAULT: 'hsl(var(--destructive))',
-  				foreground: 'hsl(var(--destructive-foreground))'
-  			},
-  			border: 'hsl(var(--border))',
-  			input: 'hsl(var(--input))',
-  			ring: 'hsl(var(--ring))',
-  			chart: {
-  				'1': 'hsl(var(--chart-1))',
-  				'2': 'hsl(var(--chart-2))',
-  				'3': 'hsl(var(--chart-3))',
-  				'4': 'hsl(var(--chart-4))',
-  				'5': 'hsl(var(--chart-5))'
-  			}
-  		},
-  		borderRadius: {
-  			lg: 'var(--radius)',
-  			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
-  		}
-  	}
-  },
-  daisyui: {
-    themes: [
-      "light",
-      "dark",
-      "cupcake",
-      "bumblebee",
-      "emerald",
-      "corporate",
-      "synthwave",
-      "retro",
-      "cyberpunk",
-      "valentine",
-      "halloween",
-      "garden",
-      "forest",
-      "aqua",
-      "lofi",
-      "pastel",
-      "fantasy",
-      "wireframe",
-      "black",
-      "luxury",
-      "dracula",
-      "cmyk",
-      "autumn",
-      "business",
-      "acid",
-      "lemonade",
-      "night",
-      "coffee",
-      "winter",
-      "dim",
-      "nord",
-      "sunset",
-    ],
-  },
-
-  plugins: [require("tailwindcss-animate"),
-	require('daisyui'),
-  ],
-};
+	darkMode: ["class"],
+	content: [
+	  "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+	  "./components/**/*.{js,ts,jsx,tsx,mdx}",
+	  "./app/**/*.{js,ts,jsx,tsx,mdx}",
+	],
+	theme: {
+	  extend: {
+		colors: {
+		  background: 'hsl(var(--background, 0 0% 100%))', // Fallback to white
+		  foreground: 'hsl(var(--foreground, 0 0% 0%))', // Fallback to black
+		  card: {
+			DEFAULT: 'hsl(var(--card, 0 0% 100%))',
+			foreground: 'hsl(var(--card-foreground, 0 0% 0%))'
+		  },
+		  popover: {
+			DEFAULT: 'hsl(var(--popover, 0 0% 100%))',
+			foreground: 'hsl(var(--popover-foreground, 0 0% 0%))'
+		  },
+		  primary: {
+			DEFAULT: '#006FE6',
+			foreground: 'hsl(var(--primary-foreground, 0 0% 100%))'
+		  },
+		  secondary: {
+			DEFAULT: 'hsl(var(--secondary, 220 10% 50%))',
+			foreground: 'hsl(var(--secondary-foreground, 0 0% 100%))'
+		  },
+		  muted: {
+			DEFAULT: 'hsl(var(--muted, 220 10% 90%))',
+			foreground: 'hsl(var(--muted-foreground, 220 10% 20%))'
+		  },
+		  accent: {
+			DEFAULT: 'hsl(var(--accent, 220 10% 60%))',
+			foreground: 'hsl(var(--accent-foreground, 0 0% 100%))'
+		  },
+		  destructive: {
+			DEFAULT: 'hsl(var(--destructive, 0 84% 60%))',
+			foreground: 'hsl(var(--destructive-foreground, 0 0% 100%))'
+		  },
+		  border: 'hsl(var(--border, 220 10% 70%))',
+		  input: 'hsl(var(--input, 220 10% 80%))',
+		  ring: 'hsl(var(--ring, 220 10% 60%))',
+		  chart: {
+			'1': 'hsl(var(--chart-1, 210 70% 50%))',
+			'2': 'hsl(var(--chart-2, 150 70% 50%))',
+			'3': 'hsl(var(--chart-3, 60 70% 50%))',
+			'4': 'hsl(var(--chart-4, 30 70% 50%))',
+			'5': 'hsl(var(--chart-5, 0 70% 50%))'
+		  }
+		},
+		borderRadius: {
+		  lg: 'var(--radius, 8px)',
+		  md: 'calc(var(--radius, 8px) - 2px)',
+		  sm: 'calc(var(--radius, 8px) - 4px)'
+		}
+	  }
+	},
+	daisyui: {
+	  themes: [
+		"light",
+		"dark",
+		"cupcake",
+		"bumblebee",
+		"emerald",
+		"corporate",
+		"synthwave",
+		"retro",
+		"cyberpunk",
+		"valentine",
+		"halloween",
+		"garden",
+		"forest",
+		"aqua",
+		"lofi",
+		"pastel",
+		"fantasy",
+		"wireframe",
+		"black",
+		"luxury",
+		"dracula",
+		"cmyk",
+		"autumn",
+		"business",
+		"acid",
+		"lemonade",
+		"night",
+		"coffee",
+		"winter",
+		"dim",
+		"nord",
+		"sunset",
+	  ],
+	},
+	plugins: [
+	  require("tailwindcss-animate"),
+	  require('daisyui'),
+	],
+  };
+  
