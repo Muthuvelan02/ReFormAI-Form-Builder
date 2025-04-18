@@ -83,7 +83,7 @@ function LiveAiForm() {
         href={process.env.NEXT_PUBLIC_BASE_URL}
         >
             <Image alt='logo' src={'/logo.png'} width={26} height={26}/>
-            Developed By Group-12 ACE
+            Developed By Group-11 ACE
         </Link>
     
       
