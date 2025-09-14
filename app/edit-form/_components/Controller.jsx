@@ -90,24 +90,24 @@ function Controller({ selectedTheme, selectedBackground }) {
       </Button>
 
       {/* Buttons for Generating Random Theme & Background */}
-      <div className="mt-4 space-y-2">
+      <div className="mt-4 flex gap-2">
       <Button 
-    className="w-full py-2 text-white font-semibold rounded-lg transition-all 
+    className="flex-1 py-1.5 text-sm text-white font-semibold rounded-lg transition-all 
                bg-gradient-to-r from-blue-500 to-indigo-600 shadow-md 
                hover:from-indigo-600 hover:to-purple-500 hover:shadow-lg 
                "
     onClick={generateRandomTheme}
   >
-    Generate Random Theme
+    Random Theme
   </Button>
   <Button 
-    className="w-full py-2 text-white font-semibold rounded-lg transition-all 
+    className="flex-1 py-1.5 text-sm text-white font-semibold rounded-lg transition-all 
                bg-gradient-to-r from-green-500 to-teal-600 shadow-md 
                hover:from-teal-600 hover:to-cyan-500 hover:shadow-lg 
                "
     onClick={generateRandomBackground}
   >
-     Generate Random Background
+     Random Background
   </Button>
       </div>
     </div>
