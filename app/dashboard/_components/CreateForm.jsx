@@ -91,7 +91,11 @@ function CreateForm() {
                                 <Button onClick={() => setOpenDialog(false)} variant="destructive">
                                     Cancel
                                 </Button>
-                                <Button disabled={loading} onClick={() => onCreateForm()}>
+                                <Button 
+                                    disabled={loading || !userInput?.trim()} 
+                                    onClick={() => onCreateForm()}
+                                    className={!userInput?.trim() ? "opacity-50 bg-gray-500 cursor-not-allowed" : ""}
+                                >
                                     {loading ? <Loader2 className="animate-spin" /> : "Create"}
                                 </Button>
                             </div>
