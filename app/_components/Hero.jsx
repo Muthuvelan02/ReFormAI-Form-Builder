@@ -1,10 +1,10 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { useState, useEffect } from "react"
-import FloatingShapes from "./FloatingShapes"
-import { animateScroll as scroll, Link as ScrollLink } from "react-scroll"
-import { motion } from "framer-motion"
+"use client";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import FloatingShapes from "./FloatingShapes";
+import { animateScroll as scroll, Link as ScrollLink } from "react-scroll";
+import { motion } from "framer-motion";
 import {
   ArrowUp,
   Bot,
@@ -21,32 +21,46 @@ import {
   MessageSquare,
   ChevronDown,
   ChevronUp,
-} from "lucide-react"
-import { SignInButton, useUser } from "@clerk/nextjs"
+  MoveRight,
+  Loader2,
+} from "lucide-react";
+import { SignInButton, SignUp, useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
-const Hero=()=> {
+const Hero = () => {
   const { user, isSignedIn } = useUser();
-  const [showTopBtn, setShowTopBtn] = useState(0)
-  const [activeAccordion, setActiveAccordion] = useState(0)
+  const [showTopBtn, setShowTopBtn] = useState(0);
+  const [activeAccordion, setActiveAccordion] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [showSignUp, setShowSignUp] = useState(false);
 
- 
+  const handleClick = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setShowSignUp(true);
+    }, 1000);
+  };
 
+  if (showSignUp) {
+    return <SignUp path="/sign-up" routing="hash" signInUrl="/sign-in" />;
+  }
   useEffect(() => {
     const handleScroll = () => {
-      setShowTopBtn(window.scrollY > 300)
-    }
+      setShowTopBtn(window.scrollY > 300);
+    };
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const scrollToTop = () => {
-    scroll.scrollToTop({ duration: 800, smooth: "easeInOutQuart" })
-  }
+    scroll.scrollToTop({ duration: 800, smooth: "easeInOutQuart" });
+  };
 
   const toggleAccordion = (index) => {
-    setActiveAccordion(activeAccordion === index ? null : index)
-  }
+    setActiveAccordion(activeAccordion === index ? null : index);
+  };
 
   // Animation variants
   const containerVariants = {
@@ -57,7 +71,7 @@ const Hero=()=> {
         staggerChildren: 0.1,
       },
     },
-  }
+  };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -65,7 +79,7 @@ const Hero=()=> {
       y: 0,
       opacity: 1,
     },
-  }
+  };
 
   return (
     <>
@@ -80,7 +94,7 @@ const Hero=()=> {
         {/* FLOATING SHAPES */}
         <div>
           <FloatingShapes />
-    </div>
+        </div>
 
         <motion.div
           initial={{ opacity: 0, y: -30 }}
@@ -108,8 +122,9 @@ const Hero=()=> {
           </h1>
 
           <p className="mt-6 text-lg sm:text-xl text-gray-200 max-w-3xl mx-auto">
-            Create smart, automated forms in seconds. Boost efficiency and streamline workflows with AI-powered
-            solutions that adapt to your business needs.
+            Create smart, automated forms in seconds. Boost efficiency and
+            streamline workflows with AI-powered solutions that adapt to your
+            business needs.
           </p>
 
           <motion.div
@@ -120,31 +135,63 @@ const Hero=()=> {
           >
             {isSignedIn ? (
               <>
-                <Link href={"/dashboard"}>
-                  <Button className="px-8 py-4 text-lg font-semibold bg-gradient-to-r from-yellow-400 to-red-500 text-white rounded-lg shadow-lg transform hover:scale-105 transition">
-                    Go to Dashboard
+                <Link href="/dashboard" onClick={handleClick}>
+                  <Button
+                    disabled={loading}
+                    className={`px-8 py-4 text-lg font-semibold rounded-lg shadow-lg transform transition 
+          bg-gradient-to-r from-yellow-400 to-red-500 text-white
+          ${loading ? "opacity-70 cursor-not-allowed" : "hover:scale-105"}`}
+                  >
+                    {loading ? (
+                      <Loader2 className="animate-spin w-5 h-5 mx-auto" />
+                    ) : (
+                      "Go to Dashboard"
+                    )}
                   </Button>
                 </Link>
-                <ScrollLink to="features" smooth={true} duration={800} offset={-50}>
+                <ScrollLink
+                  to="features"
+                  smooth={true}
+                  duration={800}
+                  offset={-50}
+                >
                   <Button className="px-8 py-4 text-lg font-semibold bg-gray-800 text-white rounded-lg shadow-lg transform hover:scale-105 transition">
-                    Explore Features 📖
+                    Explore Features
                   </Button>
                 </ScrollLink>
               </>
             ) : (
-            <>
-              <SignInButton>
-                <Button className="px-8 py-4 text-lg font-semibold bg-gradient-to-r from-yellow-400 to-red-500 text-white rounded-lg shadow-lg transform hover:scale-105 transition">
-                  Get Started 🚀
-                </Button>
-              </SignInButton>
+              <>
+                <SignInButton>
+                  <Button
+                    disabled={loading}
+                    onClick={handleClick}
+                    className={`px-8 py-4 text-lg font-semibold rounded-lg shadow-lg transform transition 
+        bg-gradient-to-r from-yellow-400 to-red-500 text-white 
+        ${loading ? "opacity-70 cursor-not-allowed" : "hover:scale-105"}`}
+                  >
+                    {loading ? (
+                      <Loader2 className="animate-spin w-5 h-5 mx-auto" />
+                    ) : (
+                      <div className="flex items-center justify-center space-x-2">
+                        <span>Get Started</span>
+                        <MoveRight />
+                      </div>
+                    )}
+                  </Button>
+                </SignInButton>
 
-              <ScrollLink to="features" smooth={true} duration={800} offset={-50}>
-                <Button className="px-8 py-4 text-lg font-semibold bg-gray-800 text-white rounded-lg shadow-lg transform hover:scale-105 transition">
-                  Explore Features 📖
-                </Button>
-              </ScrollLink>
-            </>
+                <ScrollLink
+                  to="features"
+                  smooth={true}
+                  duration={800}
+                  offset={-50}
+                >
+                  <Button className="px-8 py-4 text-lg font-semibold bg-gray-800 text-white rounded-lg shadow-lg transform hover:scale-105 transition">
+                    Explore Features
+                  </Button>
+                </ScrollLink>
+              </>
             )}
           </motion.div>
 
@@ -153,9 +200,7 @@ const Hero=()=> {
             animate={{ opacity: 1 }}
             transition={{ delay: 1.5, duration: 1 }}
             className="mt-12 flex justify-center space-x-6"
-          >
-            
-          </motion.div>
+          ></motion.div>
         </motion.div>
       </section>
 
@@ -172,10 +217,12 @@ const Hero=()=> {
               <Zap className="mr-1 h-4 w-4" />
               Powerful Features
             </span>
-            <h2 className="text-5xl font-bold text-gray-800 mb-4">Why Choose Our AI Forms?</h2>
+            <h2 className="text-5xl font-bold text-gray-800 mb-4">
+              Why Choose Our AI Forms?
+            </h2>
             <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">
-              ReForm combines cutting-edge AI with intuitive design to create the most powerful form solution on the
-              market.
+              ReForm combines cutting-edge AI with intuitive design to create
+              the most powerful form solution on the market.
             </p>
           </motion.div>
 
@@ -233,7 +280,10 @@ const Hero=()=> {
               <motion.div
                 key={index}
                 variants={itemVariants}
-                whileHover={{ scale: 1.02, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
+                whileHover={{
+                  scale: 1.02,
+                  boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
+                }}
                 transition={{ type: "spring", stiffness: 300 }}
                 className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center transition-all transform"
               >
@@ -262,9 +312,12 @@ const Hero=()=> {
               <Zap className="mr-1 h-4 w-4" />
               Simple Process
             </span>
-            <h2 className="text-4xl font-bold text-gray-800 mb-4">How ReForm Works</h2>
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">
+              How ReForm Works
+            </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Creating powerful forms has never been easier. Our AI-powered platform simplifies the entire process.
+              Creating powerful forms has never been easier. Our AI-powered
+              platform simplifies the entire process.
             </p>
           </motion.div>
 
@@ -287,7 +340,8 @@ const Hero=()=> {
               {
                 step: "03",
                 title: "Share & Collect Data",
-                description: "Publish your form instantly and start collecting responses. Analyze data in real-time.",
+                description:
+                  "Publish your form instantly and start collecting responses. Analyze data in real-time.",
                 color: "from-red-400 to-red-600",
               },
             ].map((item, index) => (
@@ -312,8 +366,6 @@ const Hero=()=> {
         </div>
       </section>
 
-      
-
       {/* STATS SECTION */}
       <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
         <div className="max-w-6xl mx-auto px-6">
@@ -324,9 +376,12 @@ const Hero=()=> {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold mb-4">Trusted by Businesses Worldwide</h2>
+            <h2 className="text-4xl font-bold mb-4">
+              Trusted by Businesses Worldwide
+            </h2>
             <p className="text-xl opacity-90 max-w-3xl mx-auto">
-              Join thousands of companies using ReForm to streamline their data collection.
+              Join thousands of companies using ReForm to streamline their data
+              collection.
             </p>
           </motion.div>
 
@@ -370,9 +425,12 @@ const Hero=()=> {
               <MessageSquare className="mr-1 h-4 w-4" />
               FAQ
             </span>
-            <h2 className="text-4xl font-bold text-gray-800 mb-4">Frequently Asked Questions</h2>
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">
+              Frequently Asked Questions
+            </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Everything you need to know about ReForm and our AI-powered form solution.
+              Everything you need to know about ReForm and our AI-powered form
+              solution.
             </p>
           </motion.div>
 
@@ -398,7 +456,6 @@ const Hero=()=> {
                 answer:
                   "ReForm integrates with popular tools like Excel, and many more. You can export you created to Excel and PDF.",
               },
-              
             ].map((faq, index) => (
               <motion.div
                 key={index}
@@ -421,7 +478,9 @@ const Hero=()=> {
                 </button>
                 <div
                   className={`overflow-hidden transition-all duration-300 ${
-                    activeAccordion === index ? "max-h-96 p-5 border-t" : "max-h-0"
+                    activeAccordion === index
+                      ? "max-h-96 p-5 border-t"
+                      : "max-h-0"
                   }`}
                 >
                   <p className="text-gray-600">{faq.answer}</p>
@@ -441,12 +500,14 @@ const Hero=()=> {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl font-bold mb-6">Ready to Transform Your Forms?</h2>
+            <h2 className="text-4xl font-bold mb-6">
+              Ready to Transform Your Forms?
+            </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Join thousands of businesses already using ReForm to create smarter, more efficient forms. Get started
-              today and see the difference.
+              Join thousands of businesses already using ReForm to create
+              smarter, more efficient forms. Get started today and see the
+              difference.
             </p>
-            
           </motion.div>
         </div>
       </section>
@@ -468,9 +529,15 @@ const Hero=()=> {
       {/* CUSTOM CSS FOR ANIMATED BACKGROUND */}
       <style jsx>{`
         @keyframes gradientAnimation {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
         }
 
         .animate-gradient {
@@ -478,58 +545,54 @@ const Hero=()=> {
           animation: gradientAnimation 10s ease infinite;
         }
       `}</style>
-     
 
-{/* FOOTER SECTION */}
-<footer className="bg-gray-900 text-white py-8">
-  <div className="max-w-6xl mx-auto px-6 text-center">
-    <h2 className="text-2xl font-semibold">ReForm - AI Form Builder</h2>
-    
-    <p className="mt-1">
-      Made by{" Muthuvelan Thangaiah"}
-    </p>
+      {/* FOOTER SECTION */}
+      <footer className="bg-gray-900 text-white py-8">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <h2 className="text-2xl font-semibold">ReForm - AI Form Builder</h2>
 
-    <div className="flex justify-center space-x-6 mt-4">
-      <a
-        href="https://www.linkedin.com/in/muthuvelan-thangaiah-b5a4a4216/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="hover:opacity-80 transition"
-      >
-        <img src="/icons8-linkedin.svg" alt="LinkedIn" className="w-8 h-8" />
-      </a>
-      <a
-        href="https://github.com/Muthuvelan02"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="hover:opacity-80 transition"
-      >
-        <img src="/github.svg" alt="GitHub" className="w-7 h-7" />
-      </a>
-      <a
-        href="https://mail.google.com/mail/?view=cm&fs=1&to=tmuthuvelan0201@gmail.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="hover:opacity-80 transition"
-      >
-        <img src="/icons8-gmail.svg" alt="Email" className="w-8 h-8" />
-      </a>
-    </div>
+          <p className="mt-1">
+            Made with ☕ and ❤️ by{" Muthuvelan Thangaiah"}
+          </p>
 
-    <p className="text-sm text-gray-400 mt-4">
-      &copy; {new Date().getFullYear()} ReForm. All rights reserved.
-    </p>
+          <div className="flex justify-center space-x-6 mt-4">
+            <a
+              href="https://www.linkedin.com/in/muthuvelan-thangaiah-b5a4a4216/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:opacity-80 transition"
+            >
+              <img
+                src="/icons8-linkedin.svg"
+                alt="LinkedIn"
+                className="w-8 h-8"
+              />
+            </a>
+            <a
+              href="https://github.com/Muthuvelan02"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:opacity-80 transition"
+            >
+              <img src="/github.svg" alt="GitHub" className="w-7 h-7" />
+            </a>
+            <a
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=tmuthuvelan0201@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:opacity-80 transition"
+            >
+              <img src="/icons8-gmail.svg" alt="Email" className="w-8 h-8" />
+            </a>
+          </div>
 
-   
-  </div>
-</footer>
-
-
-
-
+          <p className="text-sm text-gray-400 mt-4">
+            &copy; {new Date().getFullYear()} ReForm. All rights reserved.
+          </p>
+        </div>
+      </footer>
     </>
-  )
-}
+  );
+};
 
-export default Hero
-
+export default Hero;
